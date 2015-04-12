@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BL\DocumentoBL.cs" />
     <Compile Include="frmCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +83,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Properties\DataSources\NorthWind.Entity.ItemBE.datasource" />
     <None Include="Properties\DataSources\NorthWind.Entity.TbClienteBE.datasource" />
     <None Include="Properties\DataSources\NorthWind.Entity.TbProductoBE.datasource" />
     <None Include="Properties\Settings.settings">
@@ -98,6 +100,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NorthWind.DAO\NorthWind.DAO.csproj">
+      <Project>{95737bb4-5505-48d4-bfaf-6f68e994018a}</Project>
+      <Name>NorthWind.DAO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NorthWind.Entity\NorthWind.Entity.csproj">
       <Project>{51ff19d0-adca-4aeb-a13d-569471df68a0}</Project>
       <Name>NorthWind.Entity</Name>
