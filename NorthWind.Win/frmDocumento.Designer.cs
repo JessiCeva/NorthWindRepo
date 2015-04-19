@@ -53,13 +53,13 @@
             this.txtsubtotal = new System.Windows.Forms.TextBox();
             this.txtigv = new System.Windows.Forms.TextBox();
             this.txttotal = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnguardar = new System.Windows.Forms.Button();
+            this.DocumentobindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.itemDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.productoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.precioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cantidadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.totalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DocumentobindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -288,14 +288,19 @@
             this.txttotal.Size = new System.Drawing.Size(78, 20);
             this.txttotal.TabIndex = 8;
             // 
-            // button4
+            // btnguardar
             // 
-            this.button4.Location = new System.Drawing.Point(201, 291);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(71, 66);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "Guardar";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnguardar.Location = new System.Drawing.Point(201, 291);
+            this.btnguardar.Name = "btnguardar";
+            this.btnguardar.Size = new System.Drawing.Size(71, 66);
+            this.btnguardar.TabIndex = 8;
+            this.btnguardar.Text = "Guardar";
+            this.btnguardar.UseVisualStyleBackColor = true;
+            this.btnguardar.Click += new System.EventHandler(this.btnguardar_Click);
+            // 
+            // DocumentobindingSource
+            // 
+            this.DocumentobindingSource.DataSource = typeof(NorthWind.Entity.ItemBE);
             // 
             // itemDataGridViewTextBoxColumn
             // 
@@ -321,7 +326,7 @@
             this.cantidadDataGridViewTextBoxColumn.DataPropertyName = "Cantidad";
             this.cantidadDataGridViewTextBoxColumn.HeaderText = "Cantidad";
             this.cantidadDataGridViewTextBoxColumn.Name = "cantidadDataGridViewTextBoxColumn";
-            this.cantidadDataGridViewTextBoxColumn.Width = 50;
+            this.cantidadDataGridViewTextBoxColumn.Width = 60;
             // 
             // totalDataGridViewTextBoxColumn
             // 
@@ -331,16 +336,12 @@
             this.totalDataGridViewTextBoxColumn.ReadOnly = true;
             this.totalDataGridViewTextBoxColumn.Width = 50;
             // 
-            // DocumentobindingSource
-            // 
-            this.DocumentobindingSource.DataSource = typeof(NorthWind.Entity.ItemBE);
-            // 
             // frmDocumento
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(446, 362);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnguardar);
             this.Controls.Add(this.txttotal);
             this.Controls.Add(this.txtigv);
             this.Controls.Add(this.txtsubtotal);
@@ -391,12 +392,12 @@
         private System.Windows.Forms.TextBox txtsubtotal;
         private System.Windows.Forms.TextBox txtigv;
         private System.Windows.Forms.TextBox txttotal;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnguardar;
+        private System.Windows.Forms.BindingSource DocumentobindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn productoDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn precioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cantidadDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource DocumentobindingSource;
     }
 }

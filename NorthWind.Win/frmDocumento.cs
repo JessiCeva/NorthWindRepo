@@ -74,27 +74,60 @@ namespace NorthWind.Win
 
             
             //Boton agregar Factura
-            
-            /*oFacturaBL.AgregarDetalle(new ItemBE() 
+
+            try
             {
-                Cantidad = Convert.ToInt32(txtcantidad.Text),
-                Precio = Convert.ToInt32(txtprecio.Text),
-                Producto = otmpProducto
-            });
-            */
+                oFacturaBL.AgregarDetalle(new ItemBE()
+                {
+                    Cantidad = Convert.ToInt32(txtcantidad.Text),
+                    Precio = Convert.ToDecimal(txtprecio.Text),
+                    Producto = otmpProducto
+                });
 
-            //Actualizar DataGrid
-            dataGridView1.DataSource = null;
-            dataGridView1.DataSource = oFacturaBL.GetDetalle();
+                //Actualizar DataGrid
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = oFacturaBL.GetDetalle();
+
+                txtsubtotal.Text = oFacturaBL.SubTotal.ToString();
+                txtigv.Text = oFacturaBL.IGV.ToString();
+                txttotal.Text = oFacturaBL.Total.ToString();
+            }
+            catch (Exception ex)
+            {
+
+            }
             
-            txtsubtotal.Text = oFacturaBL.SubTotal.ToString();
-            txtigv.Text = oFacturaBL.IGV.ToString();
-            txttotal.Text = oFacturaBL.Total.ToString();
+            
         }
-
+            
         private void txtcantidad_KeyPress(object sender, KeyPressEventArgs e)
         {
             v.SoloNumeros(e);
+        }
+
+        private void btnguardar_Click(object sender, EventArgs e)
+        {
+            //Guardar Documento en la Base de Datos
+            DocumentoBE oDocumento = new DocumentoBE();
+            //Guardar la cabecera
+            CabDocumentoBE oCabecera = new CabDocumentoBE();
+            oCabecera.Cliente = otmpCliente;
+            oCabecera.FechaHora = DateTime.Now;
+            oCabecera.IGV = oFacturaBL.IGV;
+            oCabecera.SubTotal = oFacturaBL.SubTotal;
+            oCabecera.Total = oFacturaBL.Total;
+
+            //Agregamos la cabecera al documento
+            oDocumento.Cabecera = oCabecera;
+            //Agregamos el detalle al documento
+            oDocumento.Detalle = oFacturaBL.GetDetalle();
+            //Guardar en la Base de Datos
+            TbDocumentoDAO documento = new TbDocumentoDAO();
+            if(documento.GuardarDocumento(oDocumento)==eEstadoProceso.Correcto)
+            {
+                MessageBox.Show("Documento Guardado");
+            }
+            
         }
     }
 }
