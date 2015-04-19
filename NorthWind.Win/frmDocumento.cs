@@ -15,6 +15,8 @@ namespace NorthWind.Win
 {
     public partial class frmDocumento : Form
     {
+
+        Validacion v = new Validacion();
         public frmDocumento()
         {
             InitializeComponent();
@@ -61,15 +63,26 @@ namespace NorthWind.Win
         DocumentoBL oFacturaBL = new DocumentoBL();
         private void button3_Click(object sender, EventArgs e)
         {
+            if (txtcantidad.Text == "")
+            {
+                MessageBox.Show("Este campo esta vacio");
+            }
+            else
+            {
+                MessageBox.Show("Ok");
+            }
+
+            
             //Boton agregar Factura
             
-            oFacturaBL.AgregarDetalle(new ItemBE() 
+            /*oFacturaBL.AgregarDetalle(new ItemBE() 
             {
                 Cantidad = Convert.ToInt32(txtcantidad.Text),
                 Precio = Convert.ToInt32(txtprecio.Text),
                 Producto = otmpProducto
             });
-            
+            */
+
             //Actualizar DataGrid
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = oFacturaBL.GetDetalle();
@@ -77,6 +90,11 @@ namespace NorthWind.Win
             txtsubtotal.Text = oFacturaBL.SubTotal.ToString();
             txtigv.Text = oFacturaBL.IGV.ToString();
             txttotal.Text = oFacturaBL.Total.ToString();
+        }
+
+        private void txtcantidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            v.SoloNumeros(e);
         }
     }
 }
