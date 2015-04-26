@@ -16,7 +16,6 @@ namespace NorthWind.Win
     {
         public event EventHandler<TbProductoBE> onProductoSeleccionado;
 
-
         List<TbProductoBE> Lista = new List<TbProductoBE>();
 
         public frmProducto()

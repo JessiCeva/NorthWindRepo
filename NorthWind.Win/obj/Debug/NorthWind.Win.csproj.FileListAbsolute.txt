@@ -44,3 +44,4 @@ C:\isil\NorthWind.Win\obj\Debug\NorthWind.Win.frmDocumento.resources
 C:\isil\NorthWind.Win\obj\Debug\NorthWind.Win.frmProducto.resources
 C:\isil\NorthWind.Win\obj\Debug\NorthWind.Win.Properties.Resources.resources
 C:\isil\NorthWind.Win\obj\Debug\NorthWind.Win.csproj.GenerateResource.Cache
+C:\isil\NorthWind.Win\obj\Debug\NorthWind.Win.FrmCategorias.resources

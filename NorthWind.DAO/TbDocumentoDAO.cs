@@ -16,52 +16,62 @@ namespace NorthWind.DAO
     {
         public eEstadoProceso GuardarDocumento(DocumentoBE oDocumento)
         {
-            //GUARDA CABECERA
-            string codigodocumentogenerado = "";
-            var ConnectionString = @"Data Source=.;Initial Catalog=NorthWind;Integrated Security=SSPI";
-            using (var conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                using (var cmd = new SqlCommand("GuardarCab", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@codcliente", SqlDbType.Int).Value = oDocumento.Cabecera.Cliente.CodCliente;
-                    cmd.Parameters.Add("@subtotal", SqlDbType.Int).Value = oDocumento.Cabecera.SubTotal;
-                    cmd.Parameters.Add("@igv", SqlDbType.Int).Value = oDocumento.Cabecera.IGV;
-                    cmd.Parameters.Add("@total", SqlDbType.Int, 50).Value = oDocumento.Cabecera.Total;
-                    cmd.Parameters.Add("@fechahora", SqlDbType.SmallDateTime).Value = oDocumento.Cabecera.FechaHora;
-                    cmd.Parameters.Add("@tipodocumento", SqlDbType.NVarChar, 50).Value = oDocumento.Cabecera.TipoDocumento.ToString();
+                oDocumento.Cabecera.CodDocumento = "22";
+                var headers = new DataTable();
+                headers.Columns.Add("coddocumento", typeof(string));
+                headers.Columns.Add("codcliente", typeof(string));
+                headers.Columns.Add("subtotal", typeof(decimal));
+                headers.Columns.Add("igv", typeof(decimal));
+                headers.Columns.Add("total", typeof(decimal));
+                headers.Columns.Add("fechahora", typeof(DateTime));
+                headers.Columns.Add("tipodocumento", typeof(string));
 
-                    //cmd.ExecuteNonQuery();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            codigodocumentogenerado = reader["CodigoGenerado"].ToString();
-                        }
-                    }
+                var details = new DataTable();
+                details.Columns.Add("coddocumento", typeof(string));
+                details.Columns.Add("codproducto", typeof(string));
+                details.Columns.Add("precio", typeof(decimal));
+                details.Columns.Add("cantidad", typeof(int));
+                details.Columns.Add("total", typeof(decimal));
+
+                headers.Rows.Add(new object[] 
+                { 
+                   oDocumento.Cabecera.CodDocumento,
+                   oDocumento.Cabecera.Cliente.CodCliente,
+                   oDocumento.Cabecera.SubTotal,
+                   oDocumento.Cabecera.IGV,
+                   oDocumento.Cabecera.Total,
+                   oDocumento.Cabecera.FechaHora,
+                   oDocumento.Cabecera.TipoDocumento
+                });
+
+                foreach (ItemBE item in oDocumento.Detalle)
+                {
+                    details.Rows.Add(new object[] 
+                    { 
+                        item.Producto.CodProducto,
+                        item.Precio,
+                        item.Cantidad,
+                        item.Total,
+                    });
                 }
 
-                //GUARDA DETALLE
-                foreach (var itemlista in oDocumento.Detalle)
+                var ConnectionString = @"Data Source=.;Initial Catalog=NorthWind;Integrated Security=SSPI";
+                using (var conn = new SqlConnection(ConnectionString))
                 {
-
-                    using (SqlCommand command = new SqlCommand("GuardarDET", conn))
+                    conn.Open();
+                    using (var cmd = new SqlCommand("InsertaDocumento", conn))
                     {
-                        command.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.Add("@coddocumento", SqlDbType.Int).Value = codigodocumentogenerado;
-                        command.Parameters.Add("@codproducto", SqlDbType.Int).Value = itemlista.Producto.CodProducto;
-                        command.Parameters.Add("@precio", SqlDbType.Int).Value = itemlista.Precio;
-                        command.Parameters.Add("@cantidad", SqlDbType.Int).Value = itemlista.Cantidad;
-                        command.Parameters.Add("@total", SqlDbType.Decimal).Value = itemlista.Total;
+                        var headersParam = cmd.Parameters.AddWithValue("@Cabecera", headers);
+                        var detailsParam = cmd.Parameters.AddWithValue("@Detalle", details);
 
-                        command.ExecuteNonQuery();
+                        headersParam.SqlDbType = SqlDbType.Structured;
+                        detailsParam.SqlDbType = SqlDbType.Structured;
+                        cmd.ExecuteNonQuery();
                     }
+                    conn.Close();
                 }
-                conn.Close();
-            }
-
             //Si todo esta OK se guarda como Correcto
             return eEstadoProceso.Correcto;
         }
